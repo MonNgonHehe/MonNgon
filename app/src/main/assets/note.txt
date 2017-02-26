@@ -1,0 +1,68 @@
+/**
+ * 26/2/2017
+ *  sử dụng youtube làm dể xem video hướng dẫn
+ *
+ *  layout header set random món ăn
+ *
+ *  sử dụng widget để xuất hiện random món ăn xuất hiện trên màn hình
+ *n
+ *  đánh giá món ăn, tìm hiểu facebook vs google để đăng nhập
+ *
+ *  thanh seach trên toolbar
+ *
+ * http://monngonmoingay.com/
+ *
+ * tab to khi cick sẽ sét tab con
+ *
+ * tab to kèm (số món)
+ *
+ * tầm 4 5 sẽ có 1 thông báo : bạn đã dự định nấu món gì hôm nay chưa, xong hiện ra 1 món ăn bất kì
+ *
+ * chia sẻ món ăn bằng hình ảng cộng tên + nội dung qua dialog giống danh ngôn kèm đường dẫn
+ *
+ * làm tất cả
+ *
+ *  tab to thêm sinh viên
+ *
+ *  Chia sẻ món của bạn
+ * tab to món ăn bổ dưỡng:
+ * bà bầu
+ * ng ốm ......
+ *
+ *
+ *
+ *
+ */
+
+
+/**
+ * Luồng chạy của app:
+ *
+ *  buộc đăng nhập fb hoặc gg. dùng server lưu trữ các dữ liệu người dùng----- giao diện đăng nhập
+ *
+ *  load tất cả các dữ liệu trên server về máy - ảnh thì lưu cache + database dữ liệu món ăn
+ *
+
+ *
+ *  -tab to nước chấm ngon
+ *- tab to món ăn theo miền
+ */
+/**
+ *  bảng chia việc:P
+ *
+ *  --------------Hồng---------------------
+ *  - tìm trang các trang web chưa dữ liệu
+ *  - cộng ghi note
+ *
+ *  --------------Dương---------------------
+ *  - làm giao diện giống danh ngôn
+ *  - cộng ghi note
+------------------Tiếp theo-----------------
+t vs cậu phân tích data base cho phù hợp vs giao diện:
+
+-----khi xong data base t vs cậu sẽ tìm và add vào database
+
+ngày có database để set
+
+
+
