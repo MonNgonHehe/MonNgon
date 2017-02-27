@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Món ăn các loại" />
+            android:title="Món ngon mỗi ngày" />
         <item
             android:icon="@drawable/ic_menu_camera"
             android:title="Món Yêu thích" />
-        <item
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Thay đổi giao diện" />
-        <item
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Món ngon mỗi ngày" />
         <item
             android:icon="@drawable/ic_menu_gallery"
             android:title="Thay đổi giao diện" />
