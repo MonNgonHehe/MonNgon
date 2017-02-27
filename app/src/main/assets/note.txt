@@ -1,5 +1,6 @@
 /**
  * 26/2/2017
+ *
  *  sử dụng youtube làm dể xem video hướng dẫn
  *
  *  layout header set random món ăn
@@ -63,6 +64,79 @@ t vs cậu phân tích data base cho phù hợp vs giao diện:
 -----khi xong data base t vs cậu sẽ tìm và add vào database
 
 ngày có database để set
+
+-----------------------CSDL----------------------
+Tab to
+tap con
+nội dung món ăn
+-----Bảng 1-------
+
+- tên tab to
+-- id tab to
+
+CREATE TABLE `cach_lam` (
+	`id_mon_an`	INTEGER NOT NULL,
+	`buoc_lam`	INTEGER NOT NULL,
+	`noi_dung`	TEXT NOT NULL,
+	`anh`	TEXT
+);
+
+
+-----Bảng 2-------
+
+- tab con
+-- id tab con
+--id tab to
+
+CREATE TABLE `danh_muc_con` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`id_danh_muc`	INTEGER NOT NULL,
+	`ten`	TEXT NOT NULL
+);
+
+----bảng 3 món ăn---
+
+--id tab con
+--id món ăn
+-- tên món
+-- nguyên liệu
+
+CREATE TABLE `mon_an` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`id_danh_muc_con`	INTEGER NOT NULL,
+	`ten`	TEXT NOT NULL,
+	`nguyen_lieu`	TEXT NOT NULL
+);
+
+--- bảng 4 cách làm----
+
+---id món ăn
+-- các bước kiểu int
+-- ảnh của bước
+
+CREATE TABLE `cach_lam` (
+	`id_mon_an`	INTEGER NOT NULL,
+	`buoc_lam`	INTEGER NOT NULL,
+	`noi_dung`	TEXT NOT NULL,
+	`anh`	TEXT
+);
+
+ ----------------------hồng làm seach view-------------
+
+ ----------------------dương lấy dữ liệu http://afamily.vn--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

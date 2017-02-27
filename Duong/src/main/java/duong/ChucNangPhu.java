@@ -21,8 +21,6 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import duong.update.code.R;
-
 /**
  * Created by D on 15/01/2017.
  */
@@ -205,7 +203,7 @@ public class ChucNangPhu {
         builder.setView(editText);
         builder.show();
     }
-    private void showDialogDev(final Context context, String contentHTML, int colorApp,) {
+    private void showDialogDev(final Context context, String contentHTML, int colorApp) {
         WebView wb=new WebView(context);
         wb.loadDataWithBaseURL(null,contentHTML,"text/html","utf-8",null);
         AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(context);
