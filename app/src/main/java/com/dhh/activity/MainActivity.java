@@ -2,13 +2,18 @@ package com.dhh.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+
+import com.dhh.fragment.FragmentSreach;
 
 import com.dhh.database.DataBaseMonNgon;
 
@@ -66,6 +71,26 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            SearchView searchView = (SearchView)item.getActionView();
+            EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchEditText.setTextColor(getResources().getColor(R.color.black));
+            searchEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+            searchEditText.setBackgroundResource(R.drawable.back_ground_edittext);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                // mấy câu lệnh này chả có tác dụng j với cái edittext cả  nó vẫn màu vậy
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+
+
+                    return false;
+                }
+            });
+
             return true;
         }
         return super.onOptionsItemSelected(item);
