@@ -10,6 +10,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class AppLog {
+
     private SharedPreferences.Editor editor;
     private SharedPreferences preferences;
     public void openLog(Context context,String logName) {

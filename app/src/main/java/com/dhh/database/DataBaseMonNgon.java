@@ -4,12 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -360,7 +358,7 @@ public class DataBaseMonNgon {
                 for (Element element:uls) {
                     Elements lis=uls.get(uls.indexOf(element)).select("li");
                     for (Element el:lis) {
-//                        Log.e("faker",el.text()+" "+uls.indexOf(element)+" "+uls.indexOf(element)+lis.indexOf(el)+" "+el.select("a").attr("href"));
+                        Log.e("faker",el.text()+" "+uls.indexOf(element)+" "+uls.indexOf(element)+lis.indexOf(el)+" "+el.select("a").attr("href"));
                         String str=el.select("a").attr("href");
                         str=str.replace(".htm","/trang-1.htm");
                         loadMonans.add(new LoadMonAn(uls.indexOf(element)+""+lis.indexOf(el),str));
