@@ -74,11 +74,9 @@ nội dung món ăn
 - tên tab to
 -- id tab to
 
-CREATE TABLE `cach_lam` (
-	`id_mon_an`	INTEGER NOT NULL,
-	`buoc_lam`	INTEGER NOT NULL,
-	`noi_dung`	TEXT NOT NULL,
-	`anh`	TEXT
+CREATE TABLE `danh_muc` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`ten`	TEXT NOT NULL
 );
 
 

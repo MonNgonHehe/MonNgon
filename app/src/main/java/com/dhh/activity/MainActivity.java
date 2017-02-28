@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dhh.database.DataBaseMonNgon;
+
 /**
  * 26/2/2017
  *
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewMain();
+        DataBaseMonNgon dataBaseMonNgon=new DataBaseMonNgon(this);
     }
 
     private void setViewMain() {
