@@ -130,7 +130,6 @@ public class AsynGetLatLng extends AsyncTask<Location, Void, String> {
     }
     @Override
     protected String doInBackground(Location... params) {
-
         String diemDau = ""+params[0].getLatitude()+","+params[0].getLongitude();
         diemDau = diemDau.replace(" ", "+");
         String diemCuoi = ""+params[1].getLatitude()+","+params[1].getLongitude();

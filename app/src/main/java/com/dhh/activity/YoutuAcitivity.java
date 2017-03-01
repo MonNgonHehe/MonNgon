@@ -1,7 +1,6 @@
 package com.dhh.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,7 +28,7 @@ public class YoutuAcitivity extends YouTubeBaseActivity {
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("JF_PfuZbDFM");
+                youTubePlayer.loadVideo("6_n7ru1e-rg");
             }
 
             @Override

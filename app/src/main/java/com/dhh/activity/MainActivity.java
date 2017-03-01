@@ -1,19 +1,21 @@
 package com.dhh.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-
-import com.dhh.fragment.FragmentSreach;
+import android.widget.TextView;
 
 import com.dhh.database.DataBaseMonNgon;
 
@@ -23,6 +25,9 @@ import com.dhh.database.DataBaseMonNgon;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private TabLayout tabLayout;
+    private LayoutInflater inflater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +46,59 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        inflater=getLayoutInflater();
         setUIApp();
     }
 
 
+    private void addTabItem(String tabName) {
+        TextView tv3= (TextView) inflater.inflate(R.layout.tab_custem,null).findViewById(R.id.tv_tab);
+        tv3.setText(tabName);
+        TabLayout.Tab tab= tabLayout.newTab();
+        tab.setCustomView(tv3);
+        tabLayout.addTab(tab);
+    }
     /**
      * set giao dien app
      */
     private void setUIApp() {
-
+//        tabLayout= (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicatorHeight(0);
+        inflater=getLayoutInflater();
+        addTabItem("123123");
+        addTabItem("323");
+        addTabItem("43434");
+        addTabItem("123123");
+        addTabItem("323");
+        addTabItem("43434");
+        addTabItem("123123");
+        addTabItem("323");
+        addTabItem("43434");
+        addTabItem("123123");
+        addTabItem("323");
+        addTabItem("43434");
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+//                tabUISelect=tab.getPosition();
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
+            }
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
+            }
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
+            }
+        });
+        tabLayout.getTabAt(0).select();
+//        tabUISelect=0;
     }
 
     @Override
