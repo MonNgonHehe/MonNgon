@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import duong.ChucNangPhu;
+
 /**
  * Created by d on 17/01/2017.
  */
@@ -117,35 +119,44 @@ public class DuongSQLite {
      * @param nameDatabases
      * @throws IOException
      */
-    public void copyDataBase(Context context,String pathDB,String nameDatabases) throws IOException {
-        File file=new File(pathDB);
-        Log.e("faker",pathDB);
-        if (!file.exists()){
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-            InputStream myInput = context.getAssets().open(nameDatabases);
-            OutputStream myOutput = new FileOutputStream(pathDB);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = myInput.read(buffer))>0){
-                myOutput.write(buffer, 0, length);
+    public boolean copyDataBase(Context context, String pathDB, String nameDatabases){
+        try {
+            File file=new File(pathDB);
+            Log.e("faker copyDataBase",pathDB);
+            if (!file.exists()){
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+                InputStream myInput = context.getAssets().open(nameDatabases);
+                OutputStream myOutput = new FileOutputStream(pathDB);
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = myInput.read(buffer))>0){
+                    myOutput.write(buffer, 0, length);
+                }
+                myOutput.close();
+                myInput.close();
+                Log.e("faker close",pathDB);
+                return true;
             }
-            myOutput.close();
-            myInput.close();
-        }
+        }catch (Exception e){}
+        return false;
     }
 
     /**
-     * kiểm tra xem file sqlite đã tồn tại
-     * @param nameDatabase đường dẫn file
+     * kiểm tra xem file sqlite đã tồn tại ## nhớ hỏi quyền
+     * @param path đường dẫn file
      * @return đã tồn tại hoặc chưa true/false
      */
-    public boolean checkDataBase(String nameDatabase){
+    public boolean checkDataBase(String path){
         try {
-            return new File(nameDatabase).exists();
+            ChucNangPhu.showLog("check "+path);
+            return new File(path).exists();
+
         } catch (Exception e) {
-            return false;
+            ChucNangPhu.showLog("checkDataBase E");
+
         }
+        return false;
     }
 
     /**

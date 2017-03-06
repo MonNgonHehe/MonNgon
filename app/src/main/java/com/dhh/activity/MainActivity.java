@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.dhh.database.SqliteDBFood;
+import com.dhh.monngon.R;
 import com.dhh.object.DanhMucCon;
 
 import java.util.ArrayList;
@@ -30,12 +31,14 @@ public class MainActivity extends AppCompatActivity
     private SqliteDBFood sqliteDBFood;
     ArrayList<DanhMucCon> danhMucCons;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewMain();
         sqliteDBFood =new SqliteDBFood(this);
-        danhMucCons=sqliteDBFood.getDanhMucCon("0");
+        danhMucCons=sqliteDBFood.getDanhMucCon("4");
+        sqliteDBFood.getDanhMonAn("04");
 //        DataBaseMonNgon dataBaseMonNgon=new DataBaseMonNgon(this);
     }
 

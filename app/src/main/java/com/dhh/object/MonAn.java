@@ -5,7 +5,7 @@ package com.dhh.object;
  */
 
 public class MonAn {
-    private int stt;
+    private String stt;
     private String id;
     private String id_danhmuccon;
     private String link_img;
@@ -13,7 +13,7 @@ public class MonAn {
     private String des;
     private String content_html;
 
-    public MonAn(int stt, String id, String id_danhmuccon, String link_img, String ten, String des, String content_html) {
+    public MonAn(String stt, String id, String id_danhmuccon, String link_img, String ten, String des, String content_html) {
         this.stt = stt;
         this.id = id;
         this.id_danhmuccon = id_danhmuccon;
@@ -23,11 +23,24 @@ public class MonAn {
         this.content_html = content_html;
     }
 
-    public int getStt() {
+    @Override
+    public String toString() {
+        return "MonAn{" +
+                "stt=" + stt +
+                ", id='" + id + '\'' +
+                ", id_danhmuccon='" + id_danhmuccon + '\'' +
+                ", link_img='" + link_img + '\'' +
+                ", ten='" + ten + '\'' +
+                ", des='" + des + '\'' +
+                ", content_html='" + content_html + '\'' +
+                '}';
+    }
+
+    public String getStt() {
         return stt;
     }
 
-    public void setStt(int stt) {
+    public void setStt(String stt) {
         this.stt = stt;
     }
 
