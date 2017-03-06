@@ -365,7 +365,7 @@ public class DataBaseMonNgon {
                         Log.e("faker","-----------------------------------------------------" );
                     }
 //                    duongSQLite.insertByColumValue("danh_muc","`ten`","'"+element.text()+"'");
-                }//keytool -list -v -keystore mystore.keystore
+                }
                 /**
                  * lấy nội dung là list item từ các tab con và id tab con
                  *

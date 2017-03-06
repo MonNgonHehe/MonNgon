@@ -14,6 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.dhh.database.SqliteDBFood;
+import com.dhh.object.DanhMucCon;
+
+import java.util.ArrayList;
+
 /**
  * 26/2/2017
  *
@@ -22,11 +27,15 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private TabLayout tabLayout;
     private LayoutInflater inflater;
+    private SqliteDBFood sqliteDBFood;
+    ArrayList<DanhMucCon> danhMucCons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewMain();
+        sqliteDBFood =new SqliteDBFood(this);
+        danhMucCons=sqliteDBFood.getDanhMucCon("0");
 //        DataBaseMonNgon dataBaseMonNgon=new DataBaseMonNgon(this);
     }
 
@@ -121,7 +130,6 @@ public class MainActivity extends AppCompatActivity
             searchEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
             searchEditText.setBackgroundResource(R.drawable.back_ground_edittext);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                // mấy câu lệnh này chả có tác dụng j với cái edittext cả  nó vẫn màu vậy
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     return false;

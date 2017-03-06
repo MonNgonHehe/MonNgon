@@ -3,6 +3,8 @@ package duong.sqlite;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -92,7 +94,14 @@ public class DuongSQLite {
     private Cursor selectAllByTableName(String tableName){
        return database.rawQuery("SELECT * FROM "+tableName, null);
     }
-
+    /**
+     * lấy tất cả các dữ liệu trong bảng qua điều kiện truyền vào
+     * @param query " câu truy vấn "
+     * @return Cursor đối tượng quản lý các dòng và cột dữ liệu
+     */
+    public Cursor selectByDK(String query){
+        return database.rawQuery(query, null);
+    }
     /**
      * xóa tất cả các dữ liệu trong bảng bằng tên bảng
      * @param tableName "tên bảng"
@@ -110,6 +119,7 @@ public class DuongSQLite {
      */
     public void copyDataBase(Context context,String pathDB,String nameDatabases) throws IOException {
         File file=new File(pathDB);
+        Log.e("faker",pathDB);
         if (!file.exists()){
             file.getParentFile().mkdirs();
             file.createNewFile();

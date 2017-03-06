@@ -1,20 +1,25 @@
 package com.dhh.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import duong.DiaLogThongBao;
+
 /**
  * Created by D on 28/02/2017.
  */
 
 public class YoutuAcitivity extends YouTubeBaseActivity {
-    private Button btn;
+    private Button btnXem,btnThoat;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer.OnInitializedListener onInitializedListener;
 
@@ -23,7 +28,7 @@ public class YoutuAcitivity extends YouTubeBaseActivity {
         super.onCreate(bundle);
         setContentView(R.layout.view_youtobe);
         youTubePlayerView=(YouTubePlayerView)findViewById(R.id.youtobe_view);
-        btn =(Button)findViewById(R.id.btn_see);
+        btnXem =(Button)findViewById(R.id.btn_see);
         onInitializedListener= new YouTubePlayer.OnInitializedListener(){
 
             @Override
@@ -36,14 +41,14 @@ public class YoutuAcitivity extends YouTubeBaseActivity {
 
             }
         };
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnXem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               youTubePlayerView.initialize("AIzaSyDzJk1BW9YX0SvH1jpEkMVeDqvhXfNLkR4",onInitializedListener);
             }
         });
-    }
 
+    }
 
 
 
