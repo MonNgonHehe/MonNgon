@@ -127,6 +127,12 @@ CREATE TABLE `cach_lam` (
 -----------------hồng ------------ tìm hiểu api youtube --------- đăng nhập vào youtube activity -----
 
 
+-------------------đã và đang lấy dữ liệu-----------------------
+
+Hồng:--------------hiển thị các dữ liệu lên giao diện-----------
+1---tab to cho lên navigation
+---khi cick vào item tab to trong navigation thì sẽ repalce fragment + load tab con lên tablayout và load dữ liệu llên recycle view
+
 
 
 
