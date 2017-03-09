@@ -1,6 +1,5 @@
 package com.dhh.activity;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
 import com.dhh.asynctask.TaskDanhMucCon;
 import com.dhh.asynctask.TaskMonAn;
 import com.dhh.database.SqliteDBFood;
@@ -27,6 +27,8 @@ import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import duong.ChucNangPhu;
 
 import static com.dhh.database.SqliteDBFood.PATH;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity
     public static final String THIS = "this";
     public static final String DANH_MUC_CON="danh_muc_con";
     public static final String MON_AN="mon_an";
+    public static final String KEY_DANH_MUC_TO = "dmt";
+    public static final String KEY_MON_AN = "mon an";
+
     private TabLayout tabLayout;
     private LayoutInflater inflater;
     private SqliteDBFood duLieu;
@@ -52,13 +57,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setViewMain();
+        setView();
+        initData();
 
+    }
+
+    private void setView() {
+        setContentView(R.layout.activity_main);
 
     }
 
     private void setViewMain() {
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         inflater=getLayoutInflater();
-        initData();
         setUIApp();
     }
 
@@ -83,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         try {
             if (duLieu.checkDB()){
                 startDanhMucCon();
-                startMonAn();
+//                startMonAn();
             } else { // k có thì copy database và khỏi tạo lại
                 duLieu.getDuongSQLite().copyDataBase(this, PATH,"mon_ngon.sqlite");
                 initData();
@@ -146,24 +154,34 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_lam_banh:
                 fragmentAction =new FragmentAction();
                 FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
-                transaction.add( R.id.frame_fragment,fragmentAction);
-                transaction.show(fragmentAction);
+//                transaction.add( R.id.frame_fragment,fragmentAction);
+//                transaction.show(fragmentAction);
+                Bundle bundle=new Bundle();
+                bundle.putString(KEY_DANH_MUC_TO,"0");
+                fragmentAction.setArguments(bundle);
+                transaction.replace( R.id.frame_fragment,fragmentAction);
                 transaction.commit();
 
         }
         return true;
     }
     public  ArrayList<MonAn> getMonAns(){
-        if (monAns==null){
-            startMonAn();
-        }
+//        if (monAns==null){
+//            startMonAn();
+//        }
         return monAns;
     }
-    public ArrayList<DanhMucCon> getDanhMucCons(){
-        if(danhMucCons==null){
-            startDanhMucCon();
+    public ArrayList<DanhMucCon> getDanhMucCons(String iddanhmucto){
+        ArrayList<DanhMucCon> dmCon=new ArrayList<>();
+        for (DanhMucCon danhMucCon:danhMucCons) {
+            if(danhMucCon.getId_danh_muc().equals(iddanhmucto)){
+//                startDanhMucCon();
+                dmCon.add(danhMucCon);
+            }
         }
-        return danhMucCons;
+
+
+        return dmCon;
     }
 //    public  ArrayList<DanhMucCon> getTabDanhMucCons(){
 //        for()
@@ -172,31 +190,39 @@ public class MainActivity extends AppCompatActivity
         Handler handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                if ((ArrayList<DanhMucCon>) msg.obj != null)
+                if ((ArrayList<DanhMucCon>) msg.obj != null){
                     setDanhMucCons((ArrayList<DanhMucCon>) msg.obj);
+                    setViewMain();
+                }
               //  else initViewIntro();
             }
         };
         TaskDanhMucCon taskDanhMucCon =new TaskDanhMucCon(this,handler);
         taskDanhMucCon.execute();
     }
-    public void startMonAn() {
+    public void startMonAn(String idDanhMucCon) {
         Handler handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                if ((ArrayList<MonAn>) msg.obj != null)
+                if ((ArrayList<MonAn>) msg.obj != null){
+                    ChucNangPhu.showLog("handleMessage "+((ArrayList<MonAn>) msg.obj).size());
                     setMonAns((ArrayList<MonAn>) msg.obj);
+
+                }
+
               //  else initViewIntro();
             }
         };
         TaskMonAn taskMonAn =new TaskMonAn(this,handler);
-        taskMonAn.execute();
+        taskMonAn.execute(idDanhMucCon);
     }
 
     public  void setDanhMucCons(ArrayList<DanhMucCon> danhMucCons){
+        ChucNangPhu.showLog("setDanhMucCons "+danhMucCons.size());
         this.danhMucCons=danhMucCons;
     }
     public  void setMonAns(ArrayList<MonAn> monAns){
+        ChucNangPhu.showLog("setMonAns "+monAns.size());
         this.monAns=monAns;
     }
 }

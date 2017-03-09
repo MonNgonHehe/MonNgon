@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.dhh.activity.MainActivity;
 import com.dhh.adapter.MonAnAdapter;
 import com.dhh.monngon.R;
+import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
 
@@ -31,9 +32,7 @@ public class FragmentMonAn extends Fragment {
         recyclerView =(RecyclerView)view.findViewById(R.id.rv_item_mon_an);
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(mLayoutManager);
-        // mAdapter = new NewsAdapter(new String[]{"hello","world","qwert","test","greg","peck"});
-      //  MonAnAdapter monAnAdapter =new MonAnAdapter()
-
+        MonAnAdapter monAnAdapter =new MonAnAdapter((ArrayList<MonAn>) getArguments().getSerializable(MainActivity.KEY_MON_AN),getActivity());
         recyclerView.setAdapter(monAnAdapter);
 
         return  view;

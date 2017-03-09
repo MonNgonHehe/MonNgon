@@ -38,6 +38,7 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
 
     @Override
     public void onBindViewHolder(DanhMucViewHolder holder, int position) {
+
         MonAn monAn=monAns.get(position);
         Glide.with(context)
                 .load(monAn.getLink_img())
@@ -50,7 +51,7 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
 
     @Override
     public int getItemCount() {
-        return 0;
+        return monAns.size();
     }
 
     class DanhMucViewHolder extends RecyclerView.ViewHolder {

@@ -191,6 +191,7 @@ public class SqliteDBFood {
                 String des=cursor.getString(index_des);
                 String noi_dung=cursor.getString(index_noi_dung);
                MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
+                monan.add(monAn);
                 cursor.moveToNext();
                 //ChucNangPhu.showLog(monAn.toString());
             }
@@ -208,7 +209,7 @@ public class SqliteDBFood {
             Cursor cursor = duongSQLite.getDatabase().query(TABLE_MON_AN,null,null,null,null,null,null);
             cursor.moveToFirst();
             int index_stt=cursor.getColumnIndex("stt");
-//            int index_danh_muc_con = cursor.getColumnIndex("id");
+            int index_danh_muc_con = cursor.getColumnIndex("id");
             int index_id_mon_an=cursor.getColumnIndex("id_danh_muc_con");
             int index_link_img = cursor.getColumnIndex("link_img");
             int index_ten=cursor.getColumnIndex("ten");
@@ -216,13 +217,14 @@ public class SqliteDBFood {
             int index_noi_dung=cursor.getColumnIndex("noi_dung_html");
             while (!cursor.isAfterLast()) {
                 String stt=cursor.getString(index_stt);
-//                String danh_muc_con=cursor.getString(index_danh_muc_con);
+                String danh_muc_con=cursor.getString(index_danh_muc_con);
                 String id = cursor.getString(index_id_mon_an);
                 String link_img=cursor.getString(index_link_img);
                 String ten =cursor.getString(index_ten);
                 String des=cursor.getString(index_des);
                 String noi_dung=cursor.getString(index_noi_dung);
                 MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
+                monan.add(monAn);
                 cursor.moveToNext();
                // ChucNangPhu.showLog(monAn.toString());
             }
