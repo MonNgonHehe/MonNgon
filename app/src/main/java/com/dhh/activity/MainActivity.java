@@ -1,8 +1,12 @@
 package com.dhh.activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,12 +17,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-
+import com.dhh.asynctask.TaskDanhMucCon;
+import com.dhh.asynctask.TaskMonAn;
 import com.dhh.database.SqliteDBFood;
+import com.dhh.fragment.FragmentAction;
 import com.dhh.monngon.R;
 import com.dhh.object.DanhMucCon;
+import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.dhh.database.SqliteDBFood.PATH;
 
 /**
  * 26/2/2017
@@ -26,20 +36,25 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String LIST_DATA = "list_data";
+    public static final String THIS = "this";
+    public static final String DANH_MUC_CON="danh_muc_con";
+    public static final String MON_AN="mon_an";
     private TabLayout tabLayout;
     private LayoutInflater inflater;
-    private SqliteDBFood sqliteDBFood;
-    ArrayList<DanhMucCon> danhMucCons;
-
+    private SqliteDBFood duLieu;
+    private  ArrayList<DanhMucCon> danhMucCons;
+    private ArrayList<MonAn> monAns;
+    private List<ArrayList<MonAn>> listArrMonAns =new ArrayList<>();
+    private FragmentAction fragmentAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewMain();
-        sqliteDBFood =new SqliteDBFood(this);
-        danhMucCons=sqliteDBFood.getDanhMucCon("4");
-        sqliteDBFood.getDanhMonAn("04");
-//        DataBaseMonNgon dataBaseMonNgon=new DataBaseMonNgon(this);
+
+
     }
 
     private void setViewMain() {
@@ -54,60 +69,27 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         inflater=getLayoutInflater();
-//        setUIApp();
+        initData();
+        setUIApp();
     }
 
+    private void setUIApp() {
 
-//    private void addTabItem(String tabName) {
-//        TextView tv3= (TextView) inflater.inflate(R.layout.tab_custem,null).findViewById(R.id.tv_tab);
-//        tv3.setText(tabName);
-//        TabLayout.Tab tab= tabLayout.newTab();
-//        tab.setCustomView(tv3);
-//        tabLayout.addTab(tab);
-//    }
-    /**
-     * set giao dien app
-     */
-//    private void setUIApp() {
-//        tabLayout= (TabLayout) findViewById(R.id.tab_monan);
-//        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-//        tabLayout.setSelectedTabIndicatorHeight(0);
-//        inflater=getLayoutInflater();
-//        addTabItem("123123");
-//        addTabItem("323");
-//        addTabItem("43434");
-//        addTabItem("123123");
-//        addTabItem("323");
-//        addTabItem("43434");
-//        addTabItem("123123");
-//        addTabItem("323");
-//        addTabItem("43434");
-//        addTabItem("123123");
-//        addTabItem("323");
-//        addTabItem("43434");
-//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-////                tabUISelect=tab.getPosition();
-//                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
-//            }
-//            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
-//            }
-//            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
-//            }
-//        });
-//        tabLayout.getTabAt(0).select();
-////        tabUISelect=0;
-//    }
 
+    }
+
+    private void initData() {
+        duLieu = new SqliteDBFood(this);
+        try {
+            if (duLieu.checkDB()){
+                startDanhMucCon();
+                startMonAn();
+            } else { // k có thì copy database và khỏi tạo lại
+                duLieu.getDuongSQLite().copyDataBase(this, PATH,"mon_ngon.sqlite");
+                initData();
+            }
+        } catch (Exception e) {}
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -160,6 +142,61 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        switch (id){
+            case R.id.nav_lam_banh:
+                fragmentAction =new FragmentAction();
+                FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+                transaction.add( R.id.frame_fragment,fragmentAction);
+                transaction.show(fragmentAction);
+                transaction.commit();
+
+        }
         return true;
+    }
+    public  ArrayList<MonAn> getMonAns(){
+        if (monAns==null){
+            startMonAn();
+        }
+        return monAns;
+    }
+    public ArrayList<DanhMucCon> getDanhMucCons(){
+        if(danhMucCons==null){
+            startDanhMucCon();
+        }
+        return danhMucCons;
+    }
+//    public  ArrayList<DanhMucCon> getTabDanhMucCons(){
+//        for()
+//    }
+    public void startDanhMucCon() {
+        Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if ((ArrayList<DanhMucCon>) msg.obj != null)
+                    setDanhMucCons((ArrayList<DanhMucCon>) msg.obj);
+              //  else initViewIntro();
+            }
+        };
+        TaskDanhMucCon taskDanhMucCon =new TaskDanhMucCon(this,handler);
+        taskDanhMucCon.execute();
+    }
+    public void startMonAn() {
+        Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if ((ArrayList<MonAn>) msg.obj != null)
+                    setMonAns((ArrayList<MonAn>) msg.obj);
+              //  else initViewIntro();
+            }
+        };
+        TaskMonAn taskMonAn =new TaskMonAn(this,handler);
+        taskMonAn.execute();
+    }
+
+    public  void setDanhMucCons(ArrayList<DanhMucCon> danhMucCons){
+        this.danhMucCons=danhMucCons;
+    }
+    public  void setMonAns(ArrayList<MonAn> monAns){
+        this.monAns=monAns;
     }
 }

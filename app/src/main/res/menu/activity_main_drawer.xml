@@ -6,6 +6,29 @@
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Món ăn" />
+        <item android:title="Danh mục">
+            <menu>
+                <item
+                    android:id="@+id/nav_lam_banh"
+                    android:title="Làm bánh" />
+                <item
+                    android:id="@+id/nav_mon_an_theo_bua"
+                    android:title="Món ăn theo bữa" />
+                <item
+                    android:id="@+id/nav_theo_van_hoa"
+                    android:title="Theo văn hóa" />
+                <item
+                    android:id="@+id/nav_theo_cach_che_bien"
+                    android:title="Theo cách chế biến" />
+                <item
+                    android:id="@+id/nav_theo_thuc_pham"
+                    android:title="Theo thực phẩm" />
+                <item
+                    android:id="@+id/nav_kheo_tay"
+                    android:title="Khéo tay" />
+
+            </menu>
+        </item>
         <item
             android:icon="@drawable/ic_menu_manage"
             android:title="Ứng dụng khác" />

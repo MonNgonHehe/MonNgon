@@ -1,10 +1,12 @@
 package com.dhh.object;
 
+import java.io.Serializable;
+
 /**
  * Created by Hong on 3/6/2017.
  */
 
-public class DanhMucCon{
+public class DanhMucCon implements Serializable {
     private int stt;
     private String id,id_danh_muc,ten_danh_muc;
 

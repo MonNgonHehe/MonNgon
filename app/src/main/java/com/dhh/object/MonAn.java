@@ -1,10 +1,12 @@
 package com.dhh.object;
 
+import java.io.Serializable;
+
 /**
  * Created by Hong on 3/6/2017.
  */
 
-public class MonAn {
+public class MonAn implements Serializable {
     private String stt;
     private String id;
     private String id_danhmuccon;

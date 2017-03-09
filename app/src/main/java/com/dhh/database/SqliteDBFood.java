@@ -30,7 +30,7 @@ public class SqliteDBFood {
     public static final String TABLE_DANH_MUC = "danh_muc";
     public static final String TABLE_DANH_MUC_CON = "danh_muc_con";
     public static final String TABLE_MON_AN = "mon_an";
-    public  String PATH ="";
+    public  static  String PATH="" ;
     public SqliteDBFood(Context context) {
         this.context = context;
         duongSQLite =new DuongSQLite(context);
@@ -38,7 +38,9 @@ public class SqliteDBFood {
         PATH= Environment.getDataDirectory().getPath() +"/data/"+context.getPackageName()+"/databases/mon_ngon.sqlite";
         openDatabases();
     }
-
+    public DuongSQLite getDuongSQLite() {
+        return duongSQLite;
+    }
     public boolean checkDB() {
         return duongSQLite.checkDataBase(PATH);
     }
@@ -73,7 +75,7 @@ public class SqliteDBFood {
     private void openDatabases() {
         try {
 //            duongSQLite.copyDataBase(context, PATH, DB_NAME+".sqlite");
-            ChucNangPhu.showLog("fuck "+PATH);
+       //     ChucNangPhu.showLog("fuck "+PATH);
             ChucNangPhu.showLog("is "+duongSQLite.checkDataBase(PATH));
             if (!duongSQLite.checkDataBase(PATH)){
                 duongSQLite.copyDataBase(context, PATH, DB_NAME+".sqlite");
@@ -127,7 +129,7 @@ public class SqliteDBFood {
                 String danh_muc=cursor.getString(index_danh_muc);
                 String tenDanhMuc = cursor.getString(index_ten_danhmuc);
                 DanhMucCon danhMucCon = new DanhMucCon(stt,id,danh_muc, tenDanhMuc);
-                Log.e("Database",danhMucCon.toString());
+              //  Log.e("Database",danhMucCon.toString());
                 danhMucCons.add(danhMucCon);
                 cursor.moveToNext();
             }
@@ -138,7 +140,34 @@ public class SqliteDBFood {
             return null;
         }
     }
-    public ArrayList<MonAn> getDanhMonAn(String id_danh_muc_con) {
+    public ArrayList<DanhMucCon> getDanhMucCon() {
+        ArrayList<DanhMucCon> danhMucCons = new ArrayList<>();
+        try {
+            openDatabases();
+            Cursor cursor = duongSQLite.getDatabase().query(TABLE_DANH_MUC_CON,null,null,null,null,null,null);
+            cursor.moveToFirst();
+            int index_stt=cursor.getColumnIndex("stt");
+            int index_id=cursor.getColumnIndex("id");
+            int  index_danh_muc = cursor.getColumnIndex("id_danh_muc");
+            int index_ten_danhmuc = cursor.getColumnIndex("ten");
+            while (!cursor.isAfterLast()) {
+                int stt=cursor.getInt(index_stt);
+                String id =cursor.getString(index_id);
+                String danh_muc=cursor.getString(index_danh_muc);
+                String tenDanhMuc = cursor.getString(index_ten_danhmuc);
+                DanhMucCon danhMucCon = new DanhMucCon(stt,id,danh_muc, tenDanhMuc);
+               // Log.e("Database",danhMucCon.toString());
+                danhMucCons.add(danhMucCon);
+                cursor.moveToNext();
+            }
+            closeDatabases();
+            return danhMucCons;
+        } catch (CursorIndexOutOfBoundsException e) {
+            ChucNangPhu.showLog("CursorIndexOutOfBoundsException");
+            return null;
+        }
+    }
+    public ArrayList<MonAn> getMonAn(String id_danh_muc_con) {
         ArrayList<MonAn> monan= new ArrayList<>();
         String query = " Select * " + " From " + TABLE_MON_AN
                 + " where " + "id_danh_muc_con" + " like '" + id_danh_muc_con + "'";
@@ -163,7 +192,39 @@ public class SqliteDBFood {
                 String noi_dung=cursor.getString(index_noi_dung);
                MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
                 cursor.moveToNext();
-                ChucNangPhu.showLog(monAn.toString());
+                //ChucNangPhu.showLog(monAn.toString());
+            }
+            closeDatabases();
+            return monan ;
+        } catch (CursorIndexOutOfBoundsException e) {
+            ChucNangPhu.showLog("CursorIndexOutOfBoundsException");
+            return null;
+        }
+    }
+    public ArrayList<MonAn> getMonAn() {
+        ArrayList<MonAn> monan= new ArrayList<>();
+        try {
+            openDatabases();
+            Cursor cursor = duongSQLite.getDatabase().query(TABLE_MON_AN,null,null,null,null,null,null);
+            cursor.moveToFirst();
+            int index_stt=cursor.getColumnIndex("stt");
+//            int index_danh_muc_con = cursor.getColumnIndex("id");
+            int index_id_mon_an=cursor.getColumnIndex("id_danh_muc_con");
+            int index_link_img = cursor.getColumnIndex("link_img");
+            int index_ten=cursor.getColumnIndex("ten");
+            int index_des=cursor.getColumnIndex("des");
+            int index_noi_dung=cursor.getColumnIndex("noi_dung_html");
+            while (!cursor.isAfterLast()) {
+                String stt=cursor.getString(index_stt);
+//                String danh_muc_con=cursor.getString(index_danh_muc_con);
+                String id = cursor.getString(index_id_mon_an);
+                String link_img=cursor.getString(index_link_img);
+                String ten =cursor.getString(index_ten);
+                String des=cursor.getString(index_des);
+                String noi_dung=cursor.getString(index_noi_dung);
+                MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
+                cursor.moveToNext();
+               // ChucNangPhu.showLog(monAn.toString());
             }
             closeDatabases();
             return monan ;
