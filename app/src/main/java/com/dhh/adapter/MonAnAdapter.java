@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +13,8 @@ import com.dhh.monngon.R;
 import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
+
+import duong.ChucNangPhu;
 
 /**
  * Created by Hong on 3/8/2017.
@@ -46,6 +47,12 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
                 .into(holder.imgDanhMuc);
         holder.tvTenDanhMuc.setText(monAn.getTen());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChucNangPhu.showLog("onClick");
+            }
+        });
 
     }
 
