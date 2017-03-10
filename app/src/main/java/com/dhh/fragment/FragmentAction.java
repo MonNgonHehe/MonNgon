@@ -18,7 +18,6 @@ import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import duong.ChucNangPhu;
 
@@ -29,75 +28,47 @@ import duong.ChucNangPhu;
 public class FragmentAction extends Fragment {
     public static final String ARG_SECTION_NUMBER = "section_number";
     private MainActivity mainActivity;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private LayoutInflater inflater;
-    private ViewPagerAdapter adapter;
     private View rootView;
-    private ArrayList<DanhMucCon> danhMucConsFrag;
-    private ArrayList<MonAn> monAnFrag;
-    private List<ArrayList> arrMonAns;
+    private ArrayList<DanhMucCon> danhMucCons;
+    private ArrayList<MonAn> monAns;
+    private String idDanhMucTo;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ChucNangPhu.showLog("onCreateView FragmentAction  ");
-        this.inflater = inflater;
         mainActivity = (MainActivity) getActivity();
-        String idDanhMucTo=getArguments().getString(MainActivity.KEY_DANH_MUC_TO);
-        rootView = inflater.inflate(R.layout.tab_layout, container, false);
-        danhMucConsFrag= mainActivity.getDanhMucCons(idDanhMucTo);
-         monAnFrag=new ArrayList<>();
-        for (DanhMucCon danhMucCon:danhMucConsFrag) {
-            ChucNangPhu.showLog(mainActivity.getDanhMucCons(idDanhMucTo).size()+" getDanhMucCons");
-            startMonAn(danhMucCon.getId());
-        }
-
-        initView();
+         idDanhMucTo=getArguments().getString(MainActivity.KEY_DANH_MUC_TO);
+        ChucNangPhu.showLog("onCreateView idDanhMucTo  "+idDanhMucTo);
+        rootView = inflater.inflate(R.layout.tab_layout,null);
+        danhMucCons=mainActivity.getDanhMucCons();
+        startTaskGetMonAns(danhMucCons);
         return rootView;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        adapter.notifyDataSetChanged();
-//    }
-
-    public void startMonAn(String idDanhMucCon) {
+    private void startTaskGetMonAns(ArrayList<DanhMucCon> danhMucCons) {
         Handler handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 if ((ArrayList<MonAn>) msg.obj != null){
-                    ChucNangPhu.showLog("handleMessage "+((ArrayList<MonAn>) msg.obj).size());
-                    monAnFrag.addAll((ArrayList<MonAn>) msg.obj);
+                    monAns=new ArrayList<>();
+                    monAns=(ArrayList<MonAn>) msg.obj;
+                    ChucNangPhu.showLog("handleMessage  monAns "+monAns.size());
+                    initView();
                 }
-                //  else initViewIntro();
             }
         };
-        TaskMonAn taskMonAn =new TaskMonAn(getActivity(),handler);
-        taskMonAn.execute(idDanhMucCon);
+        TaskMonAn taskMonAn =new TaskMonAn(getActivity(),handler,danhMucCons);
+        taskMonAn.execute(idDanhMucTo);
     }
-     public  ArrayList<DanhMucCon> getDanhMucConsId(String id){
-         ArrayList<DanhMucCon> danhMucCons = new ArrayList<>();
-         for(DanhMucCon danhMucCon:danhMucConsFrag)
-             if(danhMucCon.getId().equals(id))
-                danhMucCons.add(danhMucCon);
-         return  danhMucCons;
-     }
-    public  ArrayList<MonAn> getMonAnsId(String id){
-        ArrayList<MonAn> monAns = new ArrayList<>();
-        for(MonAn monAn:monAnFrag){
-            if(monAn.getId_danhmuccon().equals(id))
-                monAns.add(monAn);
-            ChucNangPhu.showLog(monAn.getId_danhmuccon().equals(id)+" id");
-        }
 
-        return  monAns;
-    }
     private void initView() {
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
-        adapter =new ViewPagerAdapter(getActivity().getSupportFragmentManager(),danhMucConsFrag,monAnFrag);
+        ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
+         ArrayList<DanhMucCon> danhMucConSelects=new ArrayList<>();
+        for (DanhMucCon danhMucCon:danhMucCons) if (danhMucCon.getId_danh_muc().equals(idDanhMucTo)) danhMucConSelects.add(danhMucCon);
+        ChucNangPhu.showLog("initView ViewPagerAdapter "+monAns.size());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), danhMucConSelects, monAns);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(0);
     }
 
 }

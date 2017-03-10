@@ -16,24 +16,26 @@ import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
 
+import duong.ChucNangPhu;
+
 /**
  * Created by Hong on 3/8/2017.
  */
 
 public class FragmentMonAn extends Fragment {
-    private MainActivity mainActivity;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_monan,container,false);
+        View view =inflater.inflate(R.layout.fragment_monan,null);
         recyclerView =(RecyclerView)view.findViewById(R.id.rv_item_mon_an);
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(mLayoutManager);
-        MonAnAdapter monAnAdapter =new MonAnAdapter((ArrayList<MonAn>) getArguments().getSerializable(MainActivity.KEY_MON_AN),getActivity());
+        ArrayList<MonAn> monAns=(ArrayList<MonAn>) getArguments().getSerializable(MainActivity.KEY_MON_AN);
+        MonAnAdapter monAnAdapter =new MonAnAdapter(monAns,getActivity());
+        ChucNangPhu.showLog("FragmentMonAn "+monAns.size());
         recyclerView.setAdapter(monAnAdapter);
-       
         return  view;
     }
 }

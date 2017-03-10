@@ -12,14 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.dhh.asynctask.TaskDanhMucCon;
-import com.dhh.asynctask.TaskMonAn;
-import com.dhh.asynctask.TaskMonNgon;
 import com.dhh.database.SqliteDBFood;
 import com.dhh.fragment.FragmentAction;
 import com.dhh.monngon.R;
@@ -27,7 +24,6 @@ import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import duong.ChucNangPhu;
 
@@ -45,14 +41,12 @@ public class MainActivity extends AppCompatActivity
     public static final String MON_AN = "mon_an";
     public static final String KEY_DANH_MUC_TO = "dmt";
     public static final String KEY_MON_AN = "mon an";
+    private static final String LIST_DANH_MUC_CON = "list danh muc con chua phan loai";
 
     private TabLayout tabLayout;
-    private LayoutInflater inflater;
     private SqliteDBFood duLieu;
     private ArrayList<DanhMucCon> danhMucCons;
-    private ArrayList<MonAn> monAns;
     private ArrayList<MonAn> monNgons;
-    private FragmentAction fragmentAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +71,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        inflater = getLayoutInflater();
         setUIApp();
     }
 
@@ -158,24 +151,25 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_lam_banh:
                 selectedItemNavigation(id);
-                break;
+                return true;
             case R.id.nav_mon_an_theo_bua:
                 selectedItemNavigation(id);
-                break;
+                return true;
             case R.id.nav_theo_van_hoa:
                 selectedItemNavigation(id);
-                break;
+                return true;
             case R.id.nav_theo_cach_che_bien:
                 selectedItemNavigation(id);
-                break;
+                return true;
             case R.id.nav_theo_thuc_pham:
                 selectedItemNavigation(id);
-                break;
+                return true;
             case R.id.nav_kheo_tay:
                 selectedItemNavigation(id);
-                break;
+                return true;
         }
         return true;
+
     }
 
     public void selectedItemNavigation(int id) {
@@ -200,93 +194,39 @@ public class MainActivity extends AppCompatActivity
                 idDanhMucto = "5";
                 break;
         }
-        fragmentAction = new FragmentAction();
+
+        setViewFragmentAction(idDanhMucto);
+    }
+
+
+    public void setViewFragmentAction(String idDanhMucto) {
+        FragmentAction fragmentAction = new FragmentAction();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_DANH_MUC_TO, idDanhMucto);
         fragmentAction.setArguments(bundle);
-        transaction.add(R.id.frame_fragment, fragmentAction);
+        transaction.replace(R.id.frame_fragment, fragmentAction);
         transaction.commit();
     }
-
-    public ArrayList<MonAn> getMonAns() {
-//        if (monAns==null){
-//            startMonAn();
-//        }
-        return monAns;
-    }
-
-    public ArrayList<DanhMucCon> getDanhMucCons(String iddanhmucto) {
-        ArrayList<DanhMucCon> dmCon = new ArrayList<>();
-        for (DanhMucCon danhMucCon : danhMucCons) {
-            if (danhMucCon.getId_danh_muc().equals(iddanhmucto)) {
-                dmCon.add(danhMucCon);
-            }
-        }
-
-
-        return dmCon;
+    public ArrayList<DanhMucCon> getDanhMucCons() {
+        return danhMucCons;
     }
 
     public void startDanhMucCon() {
-        Handler handler = new Handler() {
+        TaskDanhMucCon taskDanhMucCon = new TaskDanhMucCon(this, new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if ((ArrayList<DanhMucCon>) msg.obj != null) {
                     setDanhMucCons((ArrayList<DanhMucCon>) msg.obj);
                     setViewMain();
                 }
-                //  else initViewIntro();
             }
-        };
-        TaskDanhMucCon taskDanhMucCon = new TaskDanhMucCon(this, handler);
+        });
         taskDanhMucCon.execute();
     }
-
-    public void startMonAn(String idDanhMucCon) {
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if ((ArrayList<MonAn>) msg.obj != null) {
-                    ChucNangPhu.showLog("handleMessage " + ((ArrayList<MonAn>) msg.obj).size());
-                    setMonAns((ArrayList<MonAn>) msg.obj);
-
-                }
-
-                //  else initViewIntro();
-            }
-        };
-        TaskMonAn taskMonAn = new TaskMonAn(this, handler);
-        taskMonAn.execute(idDanhMucCon);
-    }
-
-    //    public void startMonNgons() {
-//        Handler handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if ((ArrayList<MonAn>) msg.obj != null) {
-//                    ChucNangPhu.showLog("handleMessage " + ((ArrayList<MonAn>) msg.obj).size());
-//                    setMonAns((ArrayList<MonAn>) msg.obj);
-//
-//                }
-//
-//                //  else initViewIntro();
-//            }
-//        };
-//        TaskMonNgon taskMonNgon = new TaskMonNgon(this, handler);
-//        taskMonNgon.execute();
-//    }
     public void setDanhMucCons(ArrayList<DanhMucCon> danhMucCons) {
         ChucNangPhu.showLog("setDanhMucCons " + danhMucCons.size());
         this.danhMucCons = danhMucCons;
     }
 
-    public void setMonAns(ArrayList<MonAn> monAns) {
-        ChucNangPhu.showLog("setMonAns " + monAns.size());
-        this.monAns = monAns;
-    }
-//    public void setMonNgons(ArrayList<MonAn> monNgons){
-//        ChucNangPhu.showLog("setMonNgons " + monNgons.size());
-//        this.monNgons=monNgons;
-//    }
 }

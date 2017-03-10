@@ -9,13 +9,11 @@ import android.util.Log;
 import com.dhh.object.DanhMuc;
 import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import duong.ChucNangPhu;
 import duong.sqlite.DuongSQLite;
 
@@ -76,7 +74,6 @@ public class SqliteDBFood {
         try {
 //            duongSQLite.copyDataBase(context, PATH, DB_NAME+".sqlite");
        //     ChucNangPhu.showLog("fuck "+PATH);
-            ChucNangPhu.showLog("is "+duongSQLite.checkDataBase(PATH));
             if (!duongSQLite.checkDataBase(PATH)){
                 duongSQLite.copyDataBase(context, PATH, DB_NAME+".sqlite");
             }else  duongSQLite.openOrCreatDataBases(DB_NAME);
@@ -170,7 +167,7 @@ public class SqliteDBFood {
     public ArrayList<MonAn> getMonAn(String id_danh_muc_con) {
         ArrayList<MonAn> monan= new ArrayList<>();
         String query = " Select * " + " From " + TABLE_MON_AN
-                + " where " + "id_danh_muc_con" + " like '" + id_danh_muc_con + "'";
+                + " where " + "id_danh_muc_con" + " = '" + id_danh_muc_con + "'";
         try {
             openDatabases();
             Cursor cursor = duongSQLite.selectByDK(query);
@@ -193,7 +190,6 @@ public class SqliteDBFood {
                MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
                 monan.add(monAn);
                 cursor.moveToNext();
-                //ChucNangPhu.showLog(monAn.toString());
             }
             closeDatabases();
             return monan ;
@@ -226,7 +222,6 @@ public class SqliteDBFood {
                 MonAn monAn =new MonAn(stt,"lol",id,link_img,ten,des,noi_dung);
                 monan.add(monAn);
                 cursor.moveToNext();
-               // ChucNangPhu.showLog(monAn.toString());
             }
             closeDatabases();
             return monan ;

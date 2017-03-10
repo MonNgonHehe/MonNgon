@@ -3,7 +3,6 @@ package duong.sqlite;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -122,7 +121,6 @@ public class DuongSQLite {
     public boolean copyDataBase(Context context, String pathDB, String nameDatabases){
         try {
             File file=new File(pathDB);
-            Log.e("faker copyDataBase",pathDB);
             if (!file.exists()){
                 file.getParentFile().mkdirs();
                 file.createNewFile();
@@ -135,7 +133,6 @@ public class DuongSQLite {
                 }
                 myOutput.close();
                 myInput.close();
-                Log.e("faker close",pathDB);
                 return true;
             }
         }catch (Exception e){}
@@ -149,7 +146,6 @@ public class DuongSQLite {
      */
     public boolean checkDataBase(String path){
         try {
-            ChucNangPhu.showLog("check "+path);
             return new File(path).exists();
 
         } catch (Exception e) {
