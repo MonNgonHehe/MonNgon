@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class FragmentMonAn extends Fragment {
     private MainActivity mainActivity;
     private RecyclerView recyclerView;
-    private MonAnAdapter monAnAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Nullable
     @Override
@@ -34,7 +33,7 @@ public class FragmentMonAn extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         MonAnAdapter monAnAdapter =new MonAnAdapter((ArrayList<MonAn>) getArguments().getSerializable(MainActivity.KEY_MON_AN),getActivity());
         recyclerView.setAdapter(monAnAdapter);
-
+       
         return  view;
     }
 }

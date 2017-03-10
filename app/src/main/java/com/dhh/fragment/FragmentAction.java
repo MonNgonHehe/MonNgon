@@ -18,6 +18,7 @@ import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import duong.ChucNangPhu;
 
@@ -35,24 +36,31 @@ public class FragmentAction extends Fragment {
     private View rootView;
     private ArrayList<DanhMucCon> danhMucConsFrag;
     private ArrayList<MonAn> monAnFrag;
+    private List<ArrayList> arrMonAns;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ChucNangPhu.showLog("onCreateView FragmentAction  ");
         this.inflater = inflater;
         mainActivity = (MainActivity) getActivity();
         String idDanhMucTo=getArguments().getString(MainActivity.KEY_DANH_MUC_TO);
         rootView = inflater.inflate(R.layout.tab_layout, container, false);
-         danhMucConsFrag= mainActivity.getDanhMucCons(idDanhMucTo);
-         ChucNangPhu.showLog(mainActivity.getDanhMucCons(idDanhMucTo).size()+" getDanhMucCons");
-//         monAnFrag=mainActivity.getMonAns();
-        monAnFrag=new ArrayList<>();
+        danhMucConsFrag= mainActivity.getDanhMucCons(idDanhMucTo);
+         monAnFrag=new ArrayList<>();
         for (DanhMucCon danhMucCon:danhMucConsFrag) {
+            ChucNangPhu.showLog(mainActivity.getDanhMucCons(idDanhMucTo).size()+" getDanhMucCons");
             startMonAn(danhMucCon.getId());
         }
-        initView();
-//        ChucNangPhu.showLog(mainActivity.getMonAns().size()+" getMonAns()");
 
+        initView();
         return rootView;
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        adapter.notifyDataSetChanged();
+//    }
+
     public void startMonAn(String idDanhMucCon) {
         Handler handler=new Handler(){
             @Override
@@ -60,9 +68,7 @@ public class FragmentAction extends Fragment {
                 if ((ArrayList<MonAn>) msg.obj != null){
                     ChucNangPhu.showLog("handleMessage "+((ArrayList<MonAn>) msg.obj).size());
                     monAnFrag.addAll((ArrayList<MonAn>) msg.obj);
-
                 }
-
                 //  else initViewIntro();
             }
         };

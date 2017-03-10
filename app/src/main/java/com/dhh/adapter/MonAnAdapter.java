@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,7 +42,7 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
 
         MonAn monAn=monAns.get(position);
         Glide.with(context)
-                .load(monAn.getLink_img())
+                .load(monAn.getLink_img()).placeholder(R.drawable.ic_menu_share)
                 .into(holder.imgDanhMuc);
         holder.tvTenDanhMuc.setText(monAn.getTen());
 
@@ -54,7 +55,9 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
         return monAns.size();
     }
 
-    class DanhMucViewHolder extends RecyclerView.ViewHolder {
+
+
+    class DanhMucViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imgDanhMuc;
         TextView tvTenDanhMuc;
 
@@ -65,6 +68,12 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewH
 
         }
 
+
+        @Override
+        public void onClick(View view) {
+            view =imgDanhMuc;
+
+        }
     }
 
 

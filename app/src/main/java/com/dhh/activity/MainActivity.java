@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import com.dhh.asynctask.TaskDanhMucCon;
 import com.dhh.asynctask.TaskMonAn;
+import com.dhh.asynctask.TaskMonNgon;
 import com.dhh.database.SqliteDBFood;
 import com.dhh.fragment.FragmentAction;
 import com.dhh.monngon.R;
@@ -34,24 +35,23 @@ import static com.dhh.database.SqliteDBFood.PATH;
 
 /**
  * 26/2/2017
- *
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String ARG_SECTION_NUMBER = "section_number";
     public static final String LIST_DATA = "list_data";
     public static final String THIS = "this";
-    public static final String DANH_MUC_CON="danh_muc_con";
-    public static final String MON_AN="mon_an";
+    public static final String DANH_MUC_CON = "danh_muc_con";
+    public static final String MON_AN = "mon_an";
     public static final String KEY_DANH_MUC_TO = "dmt";
     public static final String KEY_MON_AN = "mon an";
 
     private TabLayout tabLayout;
     private LayoutInflater inflater;
     private SqliteDBFood duLieu;
-    private  ArrayList<DanhMucCon> danhMucCons;
+    private ArrayList<DanhMucCon> danhMucCons;
     private ArrayList<MonAn> monAns;
-    private List<ArrayList<MonAn>> listArrMonAns =new ArrayList<>();
+    private ArrayList<MonAn> monNgons;
     private FragmentAction fragmentAction;
 
     @Override
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        inflater=getLayoutInflater();
+        inflater = getLayoutInflater();
         setUIApp();
     }
 
@@ -89,15 +89,17 @@ public class MainActivity extends AppCompatActivity
     private void initData() {
         duLieu = new SqliteDBFood(this);
         try {
-            if (duLieu.checkDB()){
+            if (duLieu.checkDB()) {
                 startDanhMucCon();
-//                startMonAn();
+                //  startMonNgons();
             } else { // k có thì copy database và khỏi tạo lại
-                duLieu.getDuongSQLite().copyDataBase(this, PATH,"mon_ngon.sqlite");
+                duLieu.getDuongSQLite().copyDataBase(this, PATH, "mon_ngon.sqlite");
                 initData();
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -117,8 +120,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            SearchView searchView = (SearchView)item.getActionView();
-            EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            SearchView searchView = (SearchView) item.getActionView();
+            EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
             searchEditText.setTextColor(getResources().getColor(R.color.black));
             searchEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
             searchEditText.setBackgroundResource(R.drawable.back_ground_edittext);
@@ -127,6 +130,7 @@ public class MainActivity extends AppCompatActivity
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
+
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     return false;
@@ -141,6 +145,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * -----------------------------Event
      * menu navigation select
+     *
      * @param item
      * @return
      */
@@ -150,32 +155,71 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        switch (id){
+        switch (id) {
             case R.id.nav_lam_banh:
-                fragmentAction =new FragmentAction();
-                FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
-//                transaction.add( R.id.frame_fragment,fragmentAction);
-//                transaction.show(fragmentAction);
-                Bundle bundle=new Bundle();
-                bundle.putString(KEY_DANH_MUC_TO,"0");
-                fragmentAction.setArguments(bundle);
-                transaction.replace( R.id.frame_fragment,fragmentAction);
-                transaction.commit();
-
+                selectedItemNavigation(id);
+                break;
+            case R.id.nav_mon_an_theo_bua:
+                selectedItemNavigation(id);
+                break;
+            case R.id.nav_theo_van_hoa:
+                selectedItemNavigation(id);
+                break;
+            case R.id.nav_theo_cach_che_bien:
+                selectedItemNavigation(id);
+                break;
+            case R.id.nav_theo_thuc_pham:
+                selectedItemNavigation(id);
+                break;
+            case R.id.nav_kheo_tay:
+                selectedItemNavigation(id);
+                break;
         }
         return true;
     }
-    public  ArrayList<MonAn> getMonAns(){
+
+    public void selectedItemNavigation(int id) {
+        String idDanhMucto = "";
+        switch (id) {
+            case R.id.nav_lam_banh:
+                idDanhMucto = "0";
+                break;
+            case R.id.nav_mon_an_theo_bua:
+                idDanhMucto = "1";
+                break;
+            case R.id.nav_theo_van_hoa:
+                idDanhMucto = "2";
+                break;
+            case R.id.nav_theo_cach_che_bien:
+                idDanhMucto = "3";
+                break;
+            case R.id.nav_theo_thuc_pham:
+                idDanhMucto="4";
+                break;
+            case R.id.nav_kheo_tay:
+                idDanhMucto = "5";
+                break;
+        }
+        fragmentAction = new FragmentAction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_DANH_MUC_TO, idDanhMucto);
+        fragmentAction.setArguments(bundle);
+        transaction.add(R.id.frame_fragment, fragmentAction);
+        transaction.commit();
+    }
+
+    public ArrayList<MonAn> getMonAns() {
 //        if (monAns==null){
 //            startMonAn();
 //        }
         return monAns;
     }
-    public ArrayList<DanhMucCon> getDanhMucCons(String iddanhmucto){
-        ArrayList<DanhMucCon> dmCon=new ArrayList<>();
-        for (DanhMucCon danhMucCon:danhMucCons) {
-            if(danhMucCon.getId_danh_muc().equals(iddanhmucto)){
-//                startDanhMucCon();
+
+    public ArrayList<DanhMucCon> getDanhMucCons(String iddanhmucto) {
+        ArrayList<DanhMucCon> dmCon = new ArrayList<>();
+        for (DanhMucCon danhMucCon : danhMucCons) {
+            if (danhMucCon.getId_danh_muc().equals(iddanhmucto)) {
                 dmCon.add(danhMucCon);
             }
         }
@@ -183,46 +227,66 @@ public class MainActivity extends AppCompatActivity
 
         return dmCon;
     }
-//    public  ArrayList<DanhMucCon> getTabDanhMucCons(){
-//        for()
-//    }
+
     public void startDanhMucCon() {
-        Handler handler=new Handler(){
+        Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if ((ArrayList<DanhMucCon>) msg.obj != null){
+                if ((ArrayList<DanhMucCon>) msg.obj != null) {
                     setDanhMucCons((ArrayList<DanhMucCon>) msg.obj);
                     setViewMain();
                 }
-              //  else initViewIntro();
+                //  else initViewIntro();
             }
         };
-        TaskDanhMucCon taskDanhMucCon =new TaskDanhMucCon(this,handler);
+        TaskDanhMucCon taskDanhMucCon = new TaskDanhMucCon(this, handler);
         taskDanhMucCon.execute();
     }
+
     public void startMonAn(String idDanhMucCon) {
-        Handler handler=new Handler(){
+        Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if ((ArrayList<MonAn>) msg.obj != null){
-                    ChucNangPhu.showLog("handleMessage "+((ArrayList<MonAn>) msg.obj).size());
+                if ((ArrayList<MonAn>) msg.obj != null) {
+                    ChucNangPhu.showLog("handleMessage " + ((ArrayList<MonAn>) msg.obj).size());
                     setMonAns((ArrayList<MonAn>) msg.obj);
 
                 }
 
-              //  else initViewIntro();
+                //  else initViewIntro();
             }
         };
-        TaskMonAn taskMonAn =new TaskMonAn(this,handler);
+        TaskMonAn taskMonAn = new TaskMonAn(this, handler);
         taskMonAn.execute(idDanhMucCon);
     }
 
-    public  void setDanhMucCons(ArrayList<DanhMucCon> danhMucCons){
-        ChucNangPhu.showLog("setDanhMucCons "+danhMucCons.size());
-        this.danhMucCons=danhMucCons;
+    //    public void startMonNgons() {
+//        Handler handler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                if ((ArrayList<MonAn>) msg.obj != null) {
+//                    ChucNangPhu.showLog("handleMessage " + ((ArrayList<MonAn>) msg.obj).size());
+//                    setMonAns((ArrayList<MonAn>) msg.obj);
+//
+//                }
+//
+//                //  else initViewIntro();
+//            }
+//        };
+//        TaskMonNgon taskMonNgon = new TaskMonNgon(this, handler);
+//        taskMonNgon.execute();
+//    }
+    public void setDanhMucCons(ArrayList<DanhMucCon> danhMucCons) {
+        ChucNangPhu.showLog("setDanhMucCons " + danhMucCons.size());
+        this.danhMucCons = danhMucCons;
     }
-    public  void setMonAns(ArrayList<MonAn> monAns){
-        ChucNangPhu.showLog("setMonAns "+monAns.size());
-        this.monAns=monAns;
+
+    public void setMonAns(ArrayList<MonAn> monAns) {
+        ChucNangPhu.showLog("setMonAns " + monAns.size());
+        this.monAns = monAns;
     }
+//    public void setMonNgons(ArrayList<MonAn> monNgons){
+//        ChucNangPhu.showLog("setMonNgons " + monNgons.size());
+//        this.monNgons=monNgons;
+//    }
 }

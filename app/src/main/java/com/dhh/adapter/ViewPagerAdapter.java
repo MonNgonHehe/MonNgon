@@ -31,9 +31,20 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        ChucNangPhu.showLog("vị trí"+position);
+        String id_danh_muc_con= danhMucConsAdapter.get(position).getId();
+        ChucNangPhu.showLog("getItem Hong"+danhMucConsAdapter.get(position).getId());
+        ChucNangPhu.showLog("getItem Hong hhhhh"+listmonAnAdapter.size());
+        ArrayList<MonAn> arrayMonAn= new ArrayList<>();
+        for(MonAn monAn :listmonAnAdapter){
+           if(monAn.getId_danhmuccon().equals(id_danh_muc_con)){
+               arrayMonAn.add(monAn);
+           }
+        }
         FragmentMonAn fragmentMonAn =new FragmentMonAn();
         Bundle bundle=new Bundle();
-        bundle.putSerializable(MainActivity.KEY_MON_AN,listmonAnAdapter);
+        bundle.putSerializable(MainActivity.KEY_MON_AN,arrayMonAn);
+        ChucNangPhu.showLog("getItem  ArrMonAn" +arrayMonAn.size());
         ChucNangPhu.showLog("getItem " +listmonAnAdapter.size());
         fragmentMonAn.setArguments(bundle);
         return fragmentMonAn;
@@ -41,7 +52,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        Log.e("ViewPagerAdapter ",danhMucConsAdapter.size()+"");
         return danhMucConsAdapter.size();
 
     }
