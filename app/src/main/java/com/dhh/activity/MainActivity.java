@@ -22,6 +22,7 @@ import com.dhh.fragment.FragmentAction;
 import com.dhh.monngon.R;
 import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 
@@ -34,19 +35,13 @@ import static com.dhh.database.SqliteDBFood.PATH;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String ARG_SECTION_NUMBER = "section_number";
-    public static final String LIST_DATA = "list_data";
-    public static final String THIS = "this";
-    public static final String DANH_MUC_CON = "danh_muc_con";
-    public static final String MON_AN = "mon_an";
     public static final String KEY_DANH_MUC_TO = "dmt";
     public static final String KEY_MON_AN = "mon an";
     private static final String LIST_DANH_MUC_CON = "list danh muc con chua phan loai";
-
-    private TabLayout tabLayout;
     private SqliteDBFood duLieu;
     private ArrayList<DanhMucCon> danhMucCons;
     private ArrayList<MonAn> monNgons;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +79,7 @@ public class MainActivity extends AppCompatActivity
         try {
             if (duLieu.checkDB()) {
                 startDanhMucCon();
-                //  startMonNgons();
-            } else { // k có thì copy database và khỏi tạo lại
+            } else { // k có thì copy database và khởi tạo lại
                 duLieu.getDuongSQLite().copyDataBase(this, PATH, "mon_ngon.sqlite");
                 initData();
             }
@@ -113,22 +107,22 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            SearchView searchView = (SearchView) item.getActionView();
-            EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-            searchEditText.setTextColor(getResources().getColor(R.color.black));
-            searchEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
-            searchEditText.setBackgroundResource(R.drawable.back_ground_edittext);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
+//            SearchView searchView = (SearchView) item.getActionView();
+//            EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+//            searchEditText.setTextColor(getResources().getColor(R.color.black));
+//            searchEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+//            searchEditText.setBackgroundResource(R.drawable.back_ground_edittext);
+//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//                @Override
+//                public boolean onQueryTextSubmit(String query) {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean onQueryTextChange(String newText) {
+//                    return false;
+//                }
+//            });
 
             return true;
         }
@@ -173,6 +167,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void selectedItemNavigation(int id) {
+
         String idDanhMucto = "";
         switch (id) {
             case R.id.nav_lam_banh:
@@ -194,7 +189,6 @@ public class MainActivity extends AppCompatActivity
                 idDanhMucto = "5";
                 break;
         }
-
         setViewFragmentAction(idDanhMucto);
     }
 

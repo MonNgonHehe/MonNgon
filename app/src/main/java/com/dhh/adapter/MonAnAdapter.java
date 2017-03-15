@@ -1,86 +1,79 @@
 package com.dhh.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.dhh.activity.MainActivity;
+import com.dhh.fragment.FragmentChiTietMonAn;
 import com.dhh.monngon.R;
 import com.dhh.object.MonAn;
 
 import java.util.ArrayList;
 
-import duong.ChucNangPhu;
-
 /**
  * Created by Hong on 3/8/2017.
  */
 
-public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.DanhMucViewHolder> {
+public class MonAnAdapter extends ArrayAdapter<MonAn> {
+    public static final  String KEY_CHI_TIET="key_chi_tiet";
     private ArrayList<MonAn> monAns;
     private Context context;
     private LayoutInflater inflater;
-
-    public MonAnAdapter(ArrayList<MonAn> monAns, Context context) {
-        this.monAns = monAns;
+    private MainActivity mainActivity;
+    public MonAnAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<MonAn> monAns) {
+        super(context, resource, monAns);
         this.context = context;
-        inflater=LayoutInflater.from(context);
+        inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        this.monAns = monAns;
     }
 
+    @NonNull
     @Override
-    public DanhMucViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(R.layout.item_danhmuc_recyclerview, parent, false);
-        return new DanhMucViewHolder(itemView);
-
-    }
-
-    @Override
-    public void onBindViewHolder(DanhMucViewHolder holder, int position) {
-
-        MonAn monAn=monAns.get(position);
+    public View getView(final int position, @Nullable View view, @NonNull ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (view == null) {
+            view = inflater.inflate(R.layout.item_mon_an_grid, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.imgDanhMuc = (ImageView) view.findViewById(R.id.img_danhmuc);
+            viewHolder.tvTenDanhMuc = (TextView) view.findViewById(R.id.txt_danhmuc);
+            view.setTag(viewHolder);
+        }
+        viewHolder = (ViewHolder) view.getTag();
         Glide.with(context)
-                .load(monAn.getLink_img()).placeholder(R.drawable.ic_menu_share)
-                .into(holder.imgDanhMuc);
-        holder.tvTenDanhMuc.setText(monAn.getTen());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                .load(monAns.get(position).getLink_img()).placeholder(R.drawable.im_loading)
+                .into(viewHolder.imgDanhMuc);
+        viewHolder.tvTenDanhMuc.setText(monAns.get(position).getTen());
+        viewHolder.imgDanhMuc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ChucNangPhu.showLog("onClick");
+            public void onClick(View view) {
+                mainActivity=(MainActivity)getContext();
+                FragmentChiTietMonAn fragmentChiTietMonAn =new FragmentChiTietMonAn();
+                FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString(KEY_CHI_TIET,monAns.get(position).getContent_html() );
+                fragmentChiTietMonAn.setArguments(bundle);
+                transaction.replace(R.id.frame_fragment,fragmentChiTietMonAn);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
-
+        return view;
     }
 
-
-    @Override
-    public int getItemCount() {
-        return monAns.size();
-    }
-
-
-
-    class DanhMucViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView imgDanhMuc;
+    class ViewHolder {
+       ImageView imgDanhMuc;
         TextView tvTenDanhMuc;
-
-        public DanhMucViewHolder(View itemView) {
-            super(itemView);
-            imgDanhMuc = (ImageView) itemView.findViewById(R.id.img_danhmuc);
-            tvTenDanhMuc = (TextView) itemView.findViewById(R.id.txt_danhmuc);
-
-        }
-
-
-        @Override
-        public void onClick(View view) {
-            view =imgDanhMuc;
-
-        }
     }
 
 

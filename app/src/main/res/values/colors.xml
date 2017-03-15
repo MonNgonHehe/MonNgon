@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorActionbar">#FBE9E7</color>
     <color name="black">#000000</color>
+    <color name="bgToolbar">#00695C</color>
+    <color name="clorGrey">#CCC</color>
+    <color name="nen_content">#FFF9C4</color>
 </resources>

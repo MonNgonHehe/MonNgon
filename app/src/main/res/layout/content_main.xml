@@ -11,7 +11,8 @@
     <FrameLayout
         android:id="@+id/frame_fragment"
         android:layout_width="match_parent"
-        android:background="@color/B2"
+        android:background="@color/nen_content"
         android:layout_height="match_parent">
     </FrameLayout>
+
 </RelativeLayout>
