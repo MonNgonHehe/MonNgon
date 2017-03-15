@@ -27,16 +27,8 @@ public class FragmentChiTietMonAn extends Fragment {
         WebSettings webSettings =webViewChiTiet.getSettings();
         webSettings.setJavaScriptEnabled(true);
         // cải thiện hiệu suất load webview
-        webViewChiTiet.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webViewChiTiet.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webViewChiTiet.getSettings().setAppCacheEnabled(true);
-        webViewChiTiet.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-         webSettings.setUseWideViewPort(true);
-        webSettings.setSavePassword(true);
-        webSettings.setSaveFormData(true);
-        webSettings.setEnableSmoothTransition(true);
+        webViewChiTiet.getSettings().setJavaScriptEnabled(true);
+        webViewChiTiet.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3");
         String linkCss= "<link rel=\"stylesheet\" type=\"text/css\" href=\"monan.css\" />";
         String html =linkCss+ getArguments().getString(MonAnAdapter.KEY_CHI_TIET);
         webViewChiTiet.loadDataWithBaseURL("file:///android_asset/",html,  "text/html; charset=utf-8", "utf-8",null);

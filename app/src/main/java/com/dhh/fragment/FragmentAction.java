@@ -1,6 +1,8 @@
 package com.dhh.fragment;
 
 import android.app.ProgressDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -111,6 +113,9 @@ public class FragmentAction extends Fragment {
         ChucNangPhu.showLog("initView ViewPagerAdapter " + monAns.size());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), danhMucConSelects, monAns);
         viewPager.setAdapter(adapter);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
     }

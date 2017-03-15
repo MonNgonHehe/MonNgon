@@ -4,17 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.dhh.asynctask.TaskDanhMucCon;
 import com.dhh.database.SqliteDBFood;
@@ -22,12 +19,12 @@ import com.dhh.fragment.FragmentAction;
 import com.dhh.monngon.R;
 import com.dhh.object.DanhMucCon;
 import com.dhh.object.MonAn;
-import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 
 import duong.ChucNangPhu;
 
+import static android.R.attr.id;
 import static com.dhh.database.SqliteDBFood.PATH;
 
 /**
@@ -67,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setUIApp();
+        selectedItemNavigation(R.id.nav_lam_banh);
     }
 
     private void setUIApp() {
