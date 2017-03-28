@@ -18,7 +18,6 @@ import com.dhh.monngon.R;
 
 public class FragmentChiTietMonAn extends Fragment {
     private WebView webViewChiTiet;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,8 +26,9 @@ public class FragmentChiTietMonAn extends Fragment {
         WebSettings webSettings =webViewChiTiet.getSettings();
         webSettings.setJavaScriptEnabled(true);
         // cải thiện hiệu suất load webview
-        webViewChiTiet.getSettings().setJavaScriptEnabled(true);
-        webViewChiTiet.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3");
+        webSettings.setUserAgentString("Android");
+//        webSettings.setUserAgentString("Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         String linkCss= "<link rel=\"stylesheet\" type=\"text/css\" href=\"monan.css\" />";
         String html =linkCss+ getArguments().getString(MonAnAdapter.KEY_CHI_TIET);
         webViewChiTiet.loadDataWithBaseURL("file:///android_asset/",html,  "text/html; charset=utf-8", "utf-8",null);
